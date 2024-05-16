@@ -1,5 +1,3 @@
-/* eslint-disable no-undef */
-/* eslint-disable @typescript-eslint/no-var-requires */
 const { MongoClient } = require("mongodb");
 require("dotenv").config();
 const uri = process.env.URI;

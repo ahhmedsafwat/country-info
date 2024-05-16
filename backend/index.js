@@ -1,5 +1,3 @@
-/* eslint-disable no-undef */
-/* eslint-disable @typescript-eslint/no-var-requires */
 const express = require("express");
 const { ObjectId } = require("mongodb");
 const { connectToDb, getDb } = require("./connect/db");

@@ -26,16 +26,17 @@ app.get("/", (req, res) => {
   res.json("Hello");
 });
 
-app.get("/countries", (req, res) => {
+app.get("/countries", async (req, res) => {
   let countries = [];
   const page = req.query.p || 0;
-  const bookPerPage = 10;
+  const bookPerPage = 20;
   try {
-    db.collection("countries")
+    const cursor = await db
+      .collection("countries")
       .find()
       .skip(page * bookPerPage)
-      .limit(bookPerPage)
-      .forEach((country) => countries.push(country));
+      .limit(bookPerPage);
+    await cursor.forEach((country) => countries.push(country));
     res.status(200).json(countries);
   } catch (error) {
     res.status(500).json({ mssg: "something went wrong" });
@@ -100,4 +101,4 @@ app.patch("/countries/:id", (req, res) => {
   }
 });
 
-export default app;
+module.exports = app;

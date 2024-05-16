@@ -103,4 +103,4 @@ app.patch("/countries/:id", (req, res) => {
   }
 });
 
-module.exports = app;
+export default app;

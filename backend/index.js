@@ -39,7 +39,7 @@ app.get("/countries", async (req, res) => {
     await cursor.forEach((country) => countries.push(country));
     res.status(200).json(countries);
   } catch (error) {
-    res.status(500).json({ mssg: "something went wrong" });
+    res.status(500).json({ mssg: error });
   }
 });
 

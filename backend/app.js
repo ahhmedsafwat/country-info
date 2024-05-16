@@ -24,6 +24,10 @@ connectToDb((err) => {
   }
 });
 
+app.get("/", (req, res) => {
+  res.json("Hello");
+});
+
 app.get("/countries", async (req, res) => {
   let countries = [];
   const page = req.query.p || 0;
@@ -99,4 +103,4 @@ app.patch("/countries/:id", (req, res) => {
   }
 });
 
-module.exports = { app, db };
+module.exports = app;

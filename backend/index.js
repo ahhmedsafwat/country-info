@@ -26,7 +26,7 @@ app.get("/", (req, res) => {
   res.json("Hello");
 });
 
-app.get("/countries", async (req, res) => {
+app.get("/api/countries", async (req, res) => {
   let countries = [];
   const page = req.query.p || 0;
   const bookPerPage = 20;
@@ -43,7 +43,7 @@ app.get("/countries", async (req, res) => {
   }
 });
 
-app.get("/countries/:id", (req, res) => {
+app.get("/api/countries/:id", (req, res) => {
   if (ObjectId.isValid(req.params.id)) {
     db.collection("countries")
       .findOne({ _id: new ObjectId(req.params.id) })
@@ -58,7 +58,7 @@ app.get("/countries/:id", (req, res) => {
   }
 });
 
-app.post("/countries", (req, res) => {
+app.post("/api/countries", (req, res) => {
   const book = req.body;
   db.collection("countries")
     .insertOne(book)
@@ -70,7 +70,7 @@ app.post("/countries", (req, res) => {
     });
 });
 
-app.delete("/countries/:id", (req, res) => {
+app.delete("/api/countries/:id", (req, res) => {
   if (ObjectId.isValid(req.params.id)) {
     db.collection("countries")
       .deleteOne({ _id: new ObjectId(req.params.id) })
@@ -85,7 +85,7 @@ app.delete("/countries/:id", (req, res) => {
   }
 });
 
-app.patch("/countries/:id", (req, res) => {
+app.patch("/api/countries/:id", (req, res) => {
   const update = req.body;
   if (ObjectId.isValid(req.params.id)) {
     db.collection("countries")

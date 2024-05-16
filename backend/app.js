@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const express = require("express");
 const { ObjectId } = require("mongodb");
-const { connectToDb, getDb } = require("./db");
+const { connectToDb, getDb } = require("./connect/db");
 const cors = require("cors");
 
 require("dotenv").config();

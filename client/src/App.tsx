@@ -5,6 +5,7 @@ import Home from "./pages/Home";
 import CountryDetails from "./components/CountryDetails";
 import ScrollToTop from "./lib/scrollToTop";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 function App() {
   const queryClient = new QueryClient();
 
@@ -19,6 +20,7 @@ function App() {
             <Route element={<CountryDetails />} path="/CountryDetails" />
           </Routes>
         </Router>
+        <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
     </ThemeProvider>
   );

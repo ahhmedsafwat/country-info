@@ -5,7 +5,12 @@ const uri = process.env.URI;
 let dbConnection;
 module.exports = {
   connectToDb: (cb) => {
-    MongoClient.connect(uri, { connectTimeoutMS: 5000 })
+    MongoClient.connect(uri, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      connectTimeoutMS: 30000, // 30 seconds
+      socketTimeoutMS: 45000, // 45 seconds
+    })
       .then((client) => {
         dbConnection = client.db("countryinfo");
         return cb();

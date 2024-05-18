@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const uri = `${process.env.REACT_APP_API_ENDPOINT}/countries/`;
+const uri = "http://localhost:3000/api/countries";
 
 const getData = async () => {
   const response = await axios.get(uri!);

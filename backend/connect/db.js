@@ -4,12 +4,9 @@ const uri = process.env.URI;
 
 let dbConnection;
 module.exports = {
-  connectToDb: (cb) => {
-    MongoClient.connect(uri, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-      connectTimeoutMS: 30000, // 30 seconds
-      socketTimeoutMS: 45000, // 45 seconds
+  connectToDb: async (cb) => {
+    await MongoClient.connect(uri, {
+      connectTimeoutMS: 4000,
     })
       .then((client) => {
         dbConnection = client.db("countryinfo");

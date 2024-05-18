@@ -16,10 +16,7 @@ function App() {
           <NavBar />
           <Routes>
             <Route element={<Home />} path="/" />
-            <Route
-              element={<CountryDetails />}
-              path="/country-infos/CountryDetails"
-            />
+            <Route element={<CountryDetails />} path="/CountryDetails" />
           </Routes>
         </Router>
       </QueryClientProvider>

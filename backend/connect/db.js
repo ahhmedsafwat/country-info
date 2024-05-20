@@ -6,7 +6,8 @@ let dbConnection;
 module.exports = {
   connectToDb: async (cb) => {
     await MongoClient.connect(uri, {
-      connectTimeoutMS: 4000,
+      connectTimeoutMS: 10000,
+      socketTimeoutMS: 45000,
     })
       .then((client) => {
         dbConnection = client.db("countryinfo");

@@ -1,10 +1,17 @@
 import axios from "axios";
+import { useQuery } from "@tanstack/react-query";
+const uri = `${process.env.REACT_APP_API_ENDPOINT}/countries`;
 
-const uri = "http://localhost:3000/api/countries";
-
-const getData = async () => {
-  const response = await axios.get(uri!);
+const fetchCounties = async () => {
+  const response = await axios.get(uri);
   return response.data;
 };
 
-export default getData;
+const useGetCounties = () => {
+  return useQuery({
+    queryKey: ["countries"],
+    queryFn: fetchCounties,
+  });
+};
+
+export { useGetCounties };

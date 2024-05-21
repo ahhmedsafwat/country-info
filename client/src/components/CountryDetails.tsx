@@ -8,7 +8,7 @@ const CountryDetails = () => {
     <div className="container mt-11 mb-40">
       <Button
         onClick={() => {
-          navigate("/country-infos");
+          navigate("/");
         }}
         className="shadow-md px-6"
       >

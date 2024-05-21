@@ -1,7 +1,14 @@
 import { useRef, useState } from "react";
 import { Link } from "react-router-dom";
+import { country } from "@/lib/Api";
 
-const CountryComponent = () => {
+const CountryComponent = ({
+  flag,
+  capital,
+  name,
+  population,
+  region,
+}: country) => {
   const ref = useRef<HTMLAnchorElement>(null);
   const [translateX, setTranslateX] = useState(0);
   const [isHoverd, setIsHoverd] = useState(false);
@@ -41,10 +48,10 @@ const CountryComponent = () => {
         onMouseLeave={() => {
           setIsHoverd(false);
         }}
-        className="w-fit"
+        className="h-full w-full"
       >
         <div
-          className={`countryinfo__country-Component group bg-elements rounded-md overflow-hidden shadow-md cursor-pointer `}
+          className={`countryinfo__country-Component group bg-elements rounded-md overflow-hidden shadow-md cursor-pointer  `}
           style={{
             transform: isHoverd
               ? `translate(${translateX}px , 35px) scale(1.2)`
@@ -52,14 +59,18 @@ const CountryComponent = () => {
           }}
         >
           <figure>
-            <img src="https://flagcdn.com/eg.svg" alt="egypt" />
+            <img
+              src={flag}
+              alt="egypt"
+              className="w-full object-cover aspect-[3/2]"
+            />
           </figure>
           <div className="px-8 py-5 md:py-0 ">
             <h2 className="text-3xl font-nunito font-bold lg:text-2xl mb-5 md:pt-5 ">
-              Egypt
+              {name}
             </h2>
             <div
-              className={` card
+              className={`card
             ${
               isHoverd
                 ? "h-28 visible translate-y-[-5px] "
@@ -69,15 +80,15 @@ const CountryComponent = () => {
             >
               <div>
                 <span className="lable">Pupolution: </span>
-                <span className="font-nunito">105,000,000</span>
+                <span className="font-nunito">{population}</span>
               </div>
               <div>
                 <span className="lable">Region: </span>
-                <span className="font-nunito">Africa</span>
+                <span className="font-nunito">{region}</span>
               </div>
               <div>
                 <span className="lable">Capital: </span>
-                <span className="font-nunito">Cario</span>
+                <span className="font-nunito">{capital}</span>
               </div>
             </div>
           </div>

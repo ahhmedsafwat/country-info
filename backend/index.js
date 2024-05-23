@@ -43,18 +43,14 @@ app.get("/api/countries", async (req, res) => {
   }
 });
 
-app.get("/api/countries/:id", async (req, res) => {
-  if (ObjectId.isValid(req.params.id)) {
-    try {
-      const cursor = await db
-        .collection("countries")
-        .findOne({ _id: new ObjectId(req.params.id) });
-      res.status(200).json(cursor);
-    } catch (error) {
-      res.status(500).json({ mssg: "something went wrong" });
-    }
-  } else {
-    res.status(500).json({ error: "not a vild doc id" });
+app.get("/api/countries/:name", async (req, res) => {
+  try {
+    const cursor = await db
+      .collection("countries")
+      .findOne({ name: req.params.name });
+    res.status(200).json(cursor);
+  } catch (error) {
+    res.status(500).json({ mssg: "something went wrong" });
   }
 });
 

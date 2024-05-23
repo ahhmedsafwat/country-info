@@ -17,7 +17,7 @@ function App() {
           <NavBar />
           <Routes>
             <Route element={<Home />} path="/" />
-            <Route element={<CountryDetails />} path="/CountryDetails" />
+            <Route element={<CountryDetails />} path="/CountryDetails/:name" />
           </Routes>
         </Router>
         <ReactQueryDevtools initialIsOpen={false} />

@@ -42,7 +42,7 @@ const CountryComponent = ({
   return (
     <>
       <Link
-        to={`CountryDetails/`}
+        to={`CountryDetails/${name}`}
         ref={ref}
         onMouseEnter={handleelementPosition}
         onMouseLeave={() => {

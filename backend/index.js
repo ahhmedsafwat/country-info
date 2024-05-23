@@ -26,31 +26,32 @@ app.get("/", (req, res) => {
   res.json("Hello");
 });
 
-app.get("/api/countries", async (req, res) => {
-  let countries = [];
-  const page = req.query.p || 0;
-  const bookPerPage = 20;
-  try {
-    const cursor = await db
-      .collection("countries")
-      .find()
-      .skip(page * bookPerPage)
-      .limit(bookPerPage);
-    await cursor.forEach((country) => countries.push(country));
-    res.status(200).json(countries);
-  } catch (error) {
-    res.status(500).json({ mssg: "something went wrong" });
-  }
-});
+app.get("/api/countries/", async (req, res) => {
+  const { page = 0, name } = req.query;
+  const bookPerPage = 30;
 
-app.get("/api/countries/:name", async (req, res) => {
   try {
-    const cursor = await db
-      .collection("countries")
-      .findOne({ name: req.params.name });
-    res.status(200).json(cursor);
+    if (name) {
+      // If name is provided, search for a single country by name
+      const country = await db.collection("countries").findOne({ name: name });
+      if (country) {
+        res.status(200).json(country);
+      } else {
+        res.status(404).json({ message: "Country not found" });
+      }
+    } else {
+      // If name is not provided, paginate through countries
+      let countries = [];
+      const cursor = await db
+        .collection("countries")
+        .find()
+        .skip(page * bookPerPage)
+        .limit(bookPerPage);
+      await cursor.forEach((country) => countries.push(country));
+      res.status(200).json(countries);
+    }
   } catch (error) {
-    res.status(500).json({ mssg: "something went wrong" });
+    res.status(500).json({ message: "Something went wrong" });
   }
 });
 

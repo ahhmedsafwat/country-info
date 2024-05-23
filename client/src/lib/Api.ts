@@ -31,7 +31,7 @@ const useGetCounties = () => {
 const useGetCountry = (name: string) => {
   return useQuery<country>({
     queryKey: ["country", name],
-    queryFn: () => fetch(`${uri}/countries/${name}`),
+    queryFn: () => fetch(`${uri}/countries?name=${name}`),
   });
 };
 

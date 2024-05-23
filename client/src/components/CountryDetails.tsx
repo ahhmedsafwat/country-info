@@ -96,11 +96,15 @@ const CountryDetails = () => {
                 </div>
                 <div>
                   <span className="lable text-lg md:text-xl ">Languages: </span>
-                  <span className="font-nunito font-normal  md:text-lg text-base">
-                    {data?.languages?.map((lang) => (
-                      <>{lang.name}, </>
-                    ))}
-                  </span>
+
+                  {data?.languages?.map((lang) => (
+                    <span
+                      key={lang.name}
+                      className="font-nunito font-normal  md:text-lg text-base"
+                    >
+                      {lang.name},
+                    </span>
+                  ))}
                 </div>
               </div>
             </div>
@@ -111,6 +115,7 @@ const CountryDetails = () => {
               <div className="lg:max-w-xl ">
                 {fullName.map((country) => (
                   <Button
+                    key={country}
                     className="shadow-md font-nunito mx-3 my-1 text-sm"
                     onClick={() => {
                       navigate(`/CountryDetails/${country}`);

@@ -2,7 +2,8 @@ import CountryComponent from "@/components/CountryComponent";
 import { useGetCounties } from "@/lib/Api";
 
 const Countries = () => {
-  const { data, isLoading } = useGetCounties();
+  const { data, isLoading, error } = useGetCounties();
+  if (error) return <div>error</div>;
   if (isLoading) return <div>"loading..."</div>;
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-20 xl:gap-10 pt-8 md:pb-48 lg:pb-28 overflow-hidden lg:overflow-visible ">

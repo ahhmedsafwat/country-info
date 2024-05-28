@@ -1,14 +1,16 @@
 import { ArrowUp } from "lucide-react";
 import { useState } from "react";
 import "./style.css";
+import type { SearchInterface } from "@/lib/interfaces";
 
-const Filter = () => {
-  const [filter, setFilter] = useState("All");
+const Filter = ({ filter, onFilterChange }: SearchInterface) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleOptionClick = (option: string) => {
-    setFilter(option);
-    setIsOpen(false);
+    if (onFilterChange) {
+      onFilterChange(option);
+      setIsOpen(false);
+    }
   };
 
   return (
@@ -30,14 +32,17 @@ const Filter = () => {
             isOpen ? "opacity-100" : "opacity-0  translate-y-[-5px] invisible"
           } absolute top-16 bg-elements w-full left-0 rounded-md px-5 py-3 shadow-md transition-all  `}
         >
+          <div className="option" onClick={() => handleOptionClick("")}>
+            All
+          </div>
           <div className="option" onClick={() => handleOptionClick("Africa")}>
             Africa
           </div>
           <div className="option" onClick={() => handleOptionClick("Asia")}>
             Asia
           </div>
-          <div className="option" onClick={() => handleOptionClick("America")}>
-            America
+          <div className="option" onClick={() => handleOptionClick("Americas")}>
+            Americas
           </div>
           <div className="option" onClick={() => handleOptionClick("Europe")}>
             Europe

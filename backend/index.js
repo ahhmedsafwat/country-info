@@ -27,75 +27,125 @@ app.get("/", (req, res) => {
 });
 
 app.get("/api/countries/", async (req, res) => {
-  const { page = 0, name } = req.query;
-  const bookPerPage = 30;
+  const { page = 0, name, region } = req.query;
+  const bookPerPage = 28;
+  const countries = [];
 
   try {
-    if (name) {
-      // If name is provided, search for a single country by name
-      const country = await db.collection("countries").findOne({ name: name });
-      if (country) {
-        res.status(200).json(country);
+    if (region) {
+      // If region is provided, search for countries by region
+      const pageNum = parseInt(page, 10) || 0;
+
+      // Fetch the total count of documents matching the region
+      const totalCount = await db
+        .collection("countries")
+        .countDocuments({ region: region });
+
+      // Fetch the paginated documents by region
+      const cursor = db
+        .collection("countries")
+        .find({ region: region })
+        .skip(pageNum * bookPerPage)
+        .limit(bookPerPage);
+
+      await cursor.forEach((country) => countries.push(country));
+
+      if (countries.length > 0) {
+        res.status(200).json({
+          countries: countries,
+          totalCount,
+          currentPage: pageNum,
+          totalPages: Math.ceil(totalCount / bookPerPage - 1),
+        });
       } else {
-        res.status(404).json({ message: "Country not found" });
+        res.status(404).json({ message: "No countries found in this region" });
       }
     } else {
       // If name is not provided, paginate through countries
-      let countries = [];
-      const cursor = await db
-        .collection("countries")
-        .find()
-        .skip(page * bookPerPage)
-        .limit(bookPerPage);
+      const pageNum = parseInt(page, 10) || 0;
+
+      // Fetch the total count of documents
+      const totalCount = await db.collection("countries").countDocuments();
+
+      // Fetch the paginated documents
+      const cursor = db.collection("countries").find();
+
+      cursor.skip(pageNum * bookPerPage).limit(bookPerPage);
+
       await cursor.forEach((country) => countries.push(country));
-      res.status(200).json(countries);
+
+      res.status(200).json({
+        countries,
+        totalCount,
+        currentPage: pageNum,
+        totalPages: Math.ceil(totalCount / bookPerPage - 1),
+      });
     }
   } catch (error) {
     res.status(500).json({ message: "Something went wrong" });
   }
 });
 
-app.post("/api/countries", (req, res) => {
-  const book = req.body;
-  db.collection("countries")
-    .insertOne(book)
-    .then((result) => {
-      res.status(200).json(result);
-    })
-    .catch(() => {
-      res.status(500).json({ err: "could not create a new document" });
-    });
-});
+app.get("/api/country", async (req, res) => {
+  const { name } = req.query;
 
-app.delete("/api/countries/:id", (req, res) => {
-  if (ObjectId.isValid(req.params.id)) {
-    db.collection("countries")
-      .deleteOne({ _id: new ObjectId(req.params.id) })
-      .then((doc) => {
-        res.status(200).json(doc);
-      })
-      .catch(() => {
-        res.status(500).json({ err: "could not fetch the document" });
-      });
-  } else {
-    res.status(500).json({ err: "Not a vild doc id" });
+  try {
+    // If name is provided, search for a single country by name
+    const country = await db
+      .collection("countries")
+      .findOne({ name: { $regex: `^${name}`, $options: "i" } }); // Use findOne() to retrieve a single document
+
+    if (country) {
+      res.status(200).json(country);
+    } else {
+      res.status(404).json({ message: "Country not found" });
+    }
+  } catch (error) {
+    res.status(500).json({ message: "Something went wrong" });
   }
 });
 
-app.patch("/api/countries/:id", (req, res) => {
-  const update = req.body;
-  if (ObjectId.isValid(req.params.id)) {
-    db.collection("countries")
-      .updateOne({ _id: new ObjectId(req.params.id) }, { $unset: update })
-      .then((result) => {
-        res.status(200).json(result);
-      })
-      .catch(() => {
-        res.status(500).json({ err: "could not update the document" });
-      });
-  } else {
-    res.status(500).json({ err: "not a vild id" });
-  }
-});
+// app.post("/api/countries", (req, res) => {
+//   const book = req.body;
+//   db.collection("countries")
+//     .insertOne(book)
+//     .then((result) => {
+//       res.status(200).json(result);
+//     })
+//     .catch(() => {
+//       res.status(500).json({ err: "could not create a new document" });
+//     });
+// });
+
+// app.delete("/api/countries/:id", (req, res) => {
+//   if (ObjectId.isValid(req.params.id)) {
+//     db.collection("countries")
+//       .deleteOne({ _id: new ObjectId(req.params.id) })
+//       .then((doc) => {
+//         res.status(200).json(doc);
+//       })
+//       .catch(() => {
+//         res.status(500).json({ err: "could not fetch the document" });
+//       });
+//   } else {
+//     res.status(500).json({ err: "Not a vild doc id" });
+//   }
+// });
+
+// app.patch("/api/countries/:id", (req, res) => {
+//   const update = req.body;
+//   if (ObjectId.isValid(req.params.id)) {
+//     db.collection("countries")
+//       .updateOne({ _id: new ObjectId(req.params.id) }, { $unset: update })
+//       .then((result) => {
+//         res.status(200).json(result);
+//       })
+//       .catch(() => {
+//         res.status(500).json({ err: "could not update the document" });
+//       });
+//   } else {
+//     res.status(500).json({ err: "not a vild id" });
+//   }
+// });
 
 module.exports = app;

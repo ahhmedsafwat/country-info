@@ -1,6 +1,6 @@
 const { MongoClient } = require("mongodb");
 require("dotenv").config();
-const uri = process.env.URI;
+const uri = "mongodb://localhost:27017/countryInfo";
 
 let dbConnection;
 module.exports = {
@@ -10,7 +10,7 @@ module.exports = {
       socketTimeoutMS: 45000,
     })
       .then((client) => {
-        dbConnection = client.db("countryinfo");
+        dbConnection = client.db("countryInfo");
         return cb();
       })
       .catch((err) => {

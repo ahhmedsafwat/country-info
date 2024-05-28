@@ -1,11 +1,12 @@
 import SearchComponent from "@/components/SearchComponent";
 import Filter from "@/components/filter";
+import type { SearchInterface } from "@/lib/interfaces";
 
-const Search = () => {
+const Search = ({ filter, onFilterChange }: SearchInterface) => {
   return (
     <div className="md:flex justify-between mt-6">
       <SearchComponent></SearchComponent>
-      <Filter></Filter>
+      <Filter filter={filter} onFilterChange={onFilterChange}></Filter>
     </div>
   );
 };

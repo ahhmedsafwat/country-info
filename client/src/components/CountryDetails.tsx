@@ -67,7 +67,7 @@ const CountryDetails = () => {
                     Sub Region:{" "}
                   </span>
                   <span className="font-nunito font-normal  md:text-lg text-base">
-                    {data?.subRegion}
+                    {data?.subregion}
                   </span>
                 </div>
                 <div>

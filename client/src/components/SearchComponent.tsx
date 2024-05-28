@@ -28,7 +28,7 @@ const SearchComponent = () => {
   const { data, isLoading, error } = useGetCountiesSearch({
     search: debouncedSearch || undefined,
   });
-  console.log(data?.countries);
+
   return (
     <div className="relative">
       <div className="relative mb-5">
@@ -50,6 +50,7 @@ const SearchComponent = () => {
               <Link
                 className="group flex items-center font-nunito "
                 to={`/CountryDetails/${country.name}`}
+                key={country.name}
               >
                 <img
                   src={country.flag}

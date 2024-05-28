@@ -1,8 +1,6 @@
 export interface SearchInterface {
   filter?: string;
-  searchTerm?: string;
   onFilterChange?: React.Dispatch<React.SetStateAction<string>>;
-  onSearchChange?: React.Dispatch<React.SetStateAction<string>>;
 }
 export interface country {
   id?: string;

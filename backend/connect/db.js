@@ -1,6 +1,6 @@
 const { MongoClient } = require("mongodb");
 require("dotenv").config();
-const uri = "mongodb://localhost:27017/countryInfo";
+const uri = process.env.URI;
 
 let dbConnection;
 module.exports = {

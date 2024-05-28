@@ -1,7 +1,7 @@
 import CountryComponent from "@/components/CountryComponent";
 import PaginationCompontent from "@/components/paginationComponent";
 import { useGetCounties } from "@/lib/Api";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const Countries = (props: { filter: string }) => {
   const [page, setPage] = useState(0);
@@ -9,6 +9,10 @@ const Countries = (props: { filter: string }) => {
     region: `${props.filter}`,
     page: page,
   });
+
+  useEffect(() => {
+    setPage(0);
+  }, [props.filter]);
 
   const totalPages = data?.totalPages || 1; // Ensure your API returns this
 

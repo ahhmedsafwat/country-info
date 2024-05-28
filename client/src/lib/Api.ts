@@ -1,7 +1,8 @@
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 import { country, countryDetails } from "./interfaces";
-const uri = "http://localhost:3000/api";
+
+const uri = process.env.REACT_APP_API_ENDPOINT;
 
 const fetch = async (endpoint: string) => {
   const response = await axios.get(endpoint);
@@ -20,6 +21,15 @@ const useGetCounties = ({
   });
 };
 
+const useGetCountiesSearch = ({ search }: { search: string | undefined }) => {
+  return useQuery<countryDetails>({
+    queryKey: ["countriesSearch", search],
+    queryFn: () => fetch(`${uri}/countries?name=${search}`),
+    enabled: !!search,
+    retry: false,
+  });
+};
+
 const useGetCountry = (name: string) => {
   return useQuery<country>({
     queryKey: ["country", name],
@@ -27,4 +37,4 @@ const useGetCountry = (name: string) => {
   });
 };
 
-export { useGetCounties, useGetCountry };
+export { useGetCounties, useGetCountry, useGetCountiesSearch };

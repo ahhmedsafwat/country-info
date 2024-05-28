@@ -9,3 +9,18 @@
 .countryinfo__country-Component .lable {
   @apply font-nunito font-semibold text-lg;
 }
+
+.search::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+.search::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+.search::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 5px;
+}

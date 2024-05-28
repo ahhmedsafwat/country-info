@@ -6,8 +6,7 @@ import { useLocation } from "react-router-dom";
 const Home = () => {
   const { pathname } = useLocation();
   const [filter, setFilter] = useState("");
-  const [search, setSearch] = useState("");
-  console.log(filter);
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [pathname]);
@@ -15,12 +14,7 @@ const Home = () => {
   return (
     <>
       <div className="container">
-        <Search
-          filter={filter}
-          onFilterChange={setFilter}
-          searchTerm={search}
-          onSearchChange={setSearch}
-        ></Search>
+        <Search filter={filter} onFilterChange={setFilter}></Search>
         <Countries filter={filter}></Countries>
       </div>
     </>

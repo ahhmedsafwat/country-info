@@ -1,5 +1,4 @@
 const express = require("express");
-const { ObjectId } = require("mongodb");
 const { connectToDb, getDb } = require("./connect/db");
 const cors = require("cors");
 
@@ -28,7 +27,7 @@ app.get("/", (req, res) => {
 
 app.get("/api/countries/", async (req, res) => {
   const { page = 0, name, region } = req.query;
-  const bookPerPage = 28;
+  const countryPerPage = 28;
   const countries = [];
 
   try {
@@ -45,8 +44,8 @@ app.get("/api/countries/", async (req, res) => {
       const cursor = db
         .collection("countries")
         .find({ region: region })
-        .skip(pageNum * bookPerPage)
-        .limit(bookPerPage);
+        .skip(pageNum * countryPerPage)
+        .limit(countryPerPage);
 
       await cursor.forEach((country) => countries.push(country));
 
@@ -55,9 +54,30 @@ app.get("/api/countries/", async (req, res) => {
           countries: countries,
           totalCount,
           currentPage: pageNum,
-          totalPages: Math.ceil(totalCount / bookPerPage - 1),
+          totalPages: Math.ceil(totalCount / countryPerPage - 1),
         });
       } else {
+        res.status(404).json({ message: "No countries found in this region" });
+      }
+    } else if (name) {
+      try {
+        // Fetch the total count of documents matching the region
+        const totalCount = await db
+          .collection("countries")
+          .countDocuments({ name: { $regex: `^${name}`, $options: "i" } });
+
+        const cursor = await db
+          .collection("countries")
+          .find({ name: { $regex: `^${name}`, $options: "i" } })
+          .limit(7);
+        await cursor.forEach((country) => countries.push(country));
+        res.status(200).json({
+          countries: countries,
+          totalCount,
+          currentPage: 0,
+          totalPages: 0,
+        });
+      } catch (error) {
         res.status(404).json({ message: "No countries found in this region" });
       }
     } else {
@@ -70,7 +90,7 @@ app.get("/api/countries/", async (req, res) => {
       // Fetch the paginated documents
       const cursor = db.collection("countries").find();
 
-      cursor.skip(pageNum * bookPerPage).limit(bookPerPage);
+      cursor.skip(pageNum * countryPerPage).limit(countryPerPage);
 
       await cursor.forEach((country) => countries.push(country));
 
@@ -78,7 +98,7 @@ app.get("/api/countries/", async (req, res) => {
         countries,
         totalCount,
         currentPage: pageNum,
-        totalPages: Math.ceil(totalCount / bookPerPage - 1),
+        totalPages: Math.ceil(totalCount / countryPerPage - 1),
       });
     }
   } catch (error) {
@@ -91,9 +111,7 @@ app.get("/api/country", async (req, res) => {
 
   try {
     // If name is provided, search for a single country by name
-    const country = await db
-      .collection("countries")
-      .findOne({ name: { $regex: `^${name}`, $options: "i" } }); // Use findOne() to retrieve a single document
+    const country = await db.collection("countries").findOne({ name: name }); // Use findOne() to retrieve a single document
 
     if (country) {
       res.status(200).json(country);

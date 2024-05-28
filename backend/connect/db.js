@@ -10,7 +10,7 @@ module.exports = {
       socketTimeoutMS: 45000,
     })
       .then((client) => {
-        dbConnection = client.db("countryInfo");
+        dbConnection = client.db("countryinfo");
         return cb();
       })
       .catch((err) => {

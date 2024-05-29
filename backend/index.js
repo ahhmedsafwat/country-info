@@ -1,9 +1,6 @@
 const express = require("express");
 const { connectToDb, getDb } = require("./connect/db");
 const cors = require("cors");
-const speedInsights = require("@vercel/speed-insights");
-
-speedInsights.injectSpeedInsights();
 
 require("dotenv").config();
 

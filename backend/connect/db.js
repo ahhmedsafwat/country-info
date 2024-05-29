@@ -13,6 +13,8 @@ module.exports = {
         strict: true,
         deprecationErrors: true,
       },
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
     })
       .then((client) => {
         dbConnection = client.db("countryinfo");
